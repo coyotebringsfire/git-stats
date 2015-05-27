@@ -1,0 +1,26 @@
+{
+  "name": "git-stats",
+  "version": "0.0.1",
+  "description": "produce statistics",
+  "main": "stats.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coyotebringsfire/git-stats.git"
+  },
+  "keywords": [
+    "git",
+    "statistics"
+  ],
+  "author": "aumkara@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/coyotebringsfire/git-stats/issues"
+  },
+  "homepage": "https://github.com/coyotebringsfire/git-stats",
+  "dependencies": {
+    "nodegit": "^0.4.0"
+  }
+}
