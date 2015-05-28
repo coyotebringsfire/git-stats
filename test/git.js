@@ -1,7 +1,9 @@
 var should=require('should'),
+	debug=require('debug')('git:test'),
 	Git=require('../lib/git');
 
 describe("git library", function() {
+	debug("git library");
 	it("should throw an error when constructed without a git repo", function(next) {
 		(function(){
 			var git=new Git();
@@ -20,16 +22,5 @@ describe("git library", function() {
 			var git=new Git({repo:repo});
 		}).should.not.throwError();
 		next();
-	});
-});
-
-describe("git#getStats", function() {
-	it("should return an error when the git repo is invalid", function(next) {
-		var INVALID_REPO="/invalidrepo",
-			git=new Git({repo:INVALID_REPO});
-		git.getStats(function(err) {
-			err.should.be.ok;
-			next();
-		});
 	});
 });
