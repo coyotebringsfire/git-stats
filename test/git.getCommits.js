@@ -1,14 +1,14 @@
 var should=require('should'),
-	debug=require('debug')('git:getStats:test'),
+	debug=require('debug')('git:getCommits:test'),
 	Git=require('../lib/git');
 
-describe("git#getStats", function() {
-	debug("git#getStats");
+describe("git#getCommits", function() {
+	debug("git#getCommits");
 	it("should return an error when the git repo is invalid", function(next) {
 		debug("invalid repo");
 		var INVALID_REPO="/invalidrepo",
 			git=new Git({repo:INVALID_REPO});
-		git.getStats(function(err) {
+		git.getCommits(function(err) {
 			err.should.be.ok;
 			debug("%s", err);
 			next();
@@ -19,7 +19,7 @@ describe("git#getStats", function() {
 		var TEST_REPO="/Users/aumkara/workspace/MuMoo",
 			git=new Git({repo:TEST_REPO});
 		
-		git.getStats(function(err) {
+		git.getCommits(function(err) {
 			should(err).not.be.ok;
 			debug("%d commits %j", git.commits.length, git.commits);
 			git.commits.forEach( function eachCommit(commit) {
@@ -35,7 +35,7 @@ describe("git#getStats", function() {
 		var TEST_REPO="/Users/aumkara/workspace/MuMoo",
 			git=new Git({repo:TEST_REPO});
 		
-		git.getStats(function(err) {
+		git.getCommits(function(err) {
 			should(err).not.be.ok;
 			debug("%d commits %j", git.commits.length, git.commits);
 			git.commits.forEach( function eachCommit(commit) {
@@ -49,7 +49,7 @@ describe("git#getStats", function() {
 		var TEST_REPO="/Users/aumkara/workspace/MuMoo",
 			git=new Git({repo:TEST_REPO});
 		
-		git.getStats(function(err) {
+		git.getCommits(function(err) {
 			should(err).not.be.ok;
 			debug("%d commits %j", git.commits.length, git.commits);
 			git.commits.forEach( function eachCommit(commit) {
