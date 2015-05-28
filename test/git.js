@@ -3,24 +3,9 @@ var should=require('should'),
 	Git=require('../lib/git');
 
 describe("git library", function() {
-	debug("git library");
-	it("should throw an error when constructed without a git repo", function(next) {
-		(function(){
-			var git=new Git();
-		}).should.throwError();
-		next();
-	});
-	it("should throw an error when constructed with an undefined git repo", function(next) {
-		(function(){
-			var git=new Git({});
-		}).should.throwError();
-		next();
-	});
-	it("should connect to repo", function(next) {
-		var repo="/Users/Aumkara/workspace/MuMoo";
-		(function(){
-			var git=new Git({repo:repo});
-		}).should.not.throwError();
-		next();
+	it("should have train and predict methods", function(done) {
+		Git.train.should.be.type('function');
+		Git.predict.should.be.type('function');
+		done();
 	});
 });
