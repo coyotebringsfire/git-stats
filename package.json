@@ -22,10 +22,12 @@
   "homepage": "https://github.com/coyotebringsfire/git-stats",
   "dependencies": {
     "async": "^1.0.0",
+    "git-history": "0.0.2",
     "nodegit": "^0.4.0"
   },
   "devDependencies": {
     "debug": "^2.2.0",
+    "fs-plus": "^2.8.1",
     "mocha": "^2.2.5",
     "q": "^1.4.1",
     "should": "^6.0.3"
