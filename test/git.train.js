@@ -27,31 +27,6 @@ describe("git#train", function() {
 	describe("promise style", function() {
 		var testRepo;
 
-		before(function removeTestRepo(done) {
-			//delete testrepo if it exists
-			fs.remove(__dirname+"/testrepo", done);
-		});
-
-		before(function initGitRepo(done) {
-			debug=require('debug')('git:test:git.train:before');	
-			//create a new git repository
-			fs.mkdirSync(__dirname+"/testrepo");
-			debug("creating test repo %s", __dirname+"/testrepo");
-			nodegit.Repository.init(__dirname+"/testrepo", 0)
-				.then(function(_testRepo) {
-					debug("repository created");
-					testRepo=_testRepo;
-					done();
-				});
-		});
-
-		after(function(done) {
-			debug=require('debug')('git:test:git.train:after');
-			debug("removing testrepo");
-			fs.removeSync(__dirname+"/testrepo");
-			done();
-		});
-
 		it("should reject the returned promise if called without a repo", function(done) {
 			Git.train({})
 				.then(function onResolve(msg) {
@@ -76,27 +51,17 @@ describe("git#train", function() {
 				});
 		});
 		it("should resolve the returned promise if no errors happen during training", function(done) {
-			//TODO make some commits to the test repo
-			//TODO use shell commands to add and commit a file to the testrepo
 			//testRepo="/Users/aumkara/workspace/MuMoo";
 			testRepo=__dirname+"/testrepo";
-			fs.writeFileSync(testRepo+"/test.json", JSON.stringify({}) );
-
-			//cd testrepo && git add test.json && git commit -m "test commit" -a
-			child_process.exec('cd testrepo && git add test.json && git commit -m "test commit" -a', function(err, stdout, stderr) {
-				should(err).not.be.ok;
-				debug("stdout: %j", stdout);
-				debug("stderr: %j", stderr);
-				Git.train({repo:testRepo})
-					.then(function onResolve(trainedModel) {
-						debug("Promise was resolved: %j", trainedModel);
-						trainedModel.should.be.ok;
-						done();
-					}, function onReject(err) {
-						should.fail("Promise was rejected: %j", err);
-						done();
-					});
-			});
+			Git.train({repo:testRepo})
+				.then(function onResolve(trainedModel) {
+					debug("Promise was resolved: %j", trainedModel);
+					trainedModel.should.be.ok;
+					done();
+				}, function onReject(err) {
+					should.fail("Promise was rejected: %j", err);
+					done();
+				});
 		});
 	});
 });
