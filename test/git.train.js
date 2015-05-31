@@ -85,6 +85,8 @@ describe("git#train", function() {
 			//cd testrepo && git add test.json && git commit -m "test commit" -a
 			child_process.exec('cd testrepo && git add test.json && git commit -m "test commit" -a', function(err, stdout, stderr) {
 				should(err).not.be.ok;
+				debug("stdout: %j", stdout);
+				debug("stderr: %j", stderr);
 				Git.train({repo:testRepo})
 					.then(function onResolve(trainedModel) {
 						debug("Promise was resolved: %j", trainedModel);
