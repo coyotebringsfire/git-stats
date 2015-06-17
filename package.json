@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "learn from git and npm statistics and then predict whether a repository will be popular",
   "main": "stats.js",
-  "publish":false,
+  "publish": false,
   "scripts": {
     "test": "mocha"
   },
