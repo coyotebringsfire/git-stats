@@ -28,6 +28,7 @@
     "git-history": "0.0.2",
     "git-show": "^0.0.3",
     "git-wrapper2": "^0.2.5",
+    "merge": "^1.2.0",
     "nodegit": "^0.4.0",
     "npm-stats": "^1.1.0",
     "q": "^1.4.1",
