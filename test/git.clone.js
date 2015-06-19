@@ -8,7 +8,19 @@ describe("git_clone", function gitCloneSuite() {
 	this.timeout(0);
 	var debug=require('debug')('git:test:gitCloneSuite');
 
-	beforeEach(function afterEachTest(done) {
+	beforeEach(function beforeEachTest(done) {
+		var debug=require('debug')('git:test:gitCloneSuite:after');
+		debug("removing /tmp/xuexi");
+		try {
+			debug("removing /tmp/xuexi");
+			fs.removeSync("/tmp/xuexi");
+		} catch(e) {
+			debug("error removing /tmp/xuexi %j", e);
+		}
+		done();
+	});
+
+	after(function afterAllTests(done) {
 		var debug=require('debug')('git:test:gitCloneSuite:after');
 		debug("removing /tmp/xuexi");
 		try {
