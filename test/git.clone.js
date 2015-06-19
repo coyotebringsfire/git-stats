@@ -1,5 +1,5 @@
 var should=require('should'),
-	git_clone=require('../lib/git_clone'),
+	git_clone=require('../lib/git.clone'),
 	testrepo="https://github.com/coyotebringsfire/xuexi.git",
 	debug=require('debug')('git:test'),
 	fs=require('fs-plus');
