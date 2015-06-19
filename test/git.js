@@ -1,5 +1,5 @@
 var should=require('should'),
-	debug=require('debug')('git:test'),
+	debug=require('debug')('xuexi:git:test'),
 	Git=require('../lib/git');
 
 describe("git library", function() {

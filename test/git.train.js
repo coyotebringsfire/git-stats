@@ -1,5 +1,5 @@
 var should=require('should'),
-	debug=require('debug')('git:train:test'),
+	debug=require('debug')('xuexi:git:train:test'),
 	fs=require('fs-plus'),
 	nodegit=require('nodegit'),
 	child_process=require('child_process'),
