@@ -9,8 +9,7 @@ describe("git_clone", function gitCloneSuite() {
 	var debug=require('debug')('xuexi:git:test:gitCloneSuite');
 
 	beforeEach(function beforeEachTest(done) {
-		var debug=require('debug')('xuexi:git:test:gitCloneSuite:after');
-		debug("removing /tmp/xuexi");
+		var debug=require('debug')('xuexi:git:test:gitCloneSuite:beforeEachTest');
 		try {
 			debug("removing /tmp/xuexi");
 			fs.removeSync("/tmp/xuexi");
@@ -21,8 +20,7 @@ describe("git_clone", function gitCloneSuite() {
 	});
 
 	after(function afterAllTests(done) {
-		var debug=require('debug')('xuexi:git:test:gitCloneSuite:after');
-		debug("removing /tmp/xuexi");
+		var debug=require('debug')('xuexi:git:test:gitCloneSuite:afterAllTests');
 		try {
 			debug("removing /tmp/xuexi");
 			fs.removeSync("/tmp/xuexi");
@@ -52,12 +50,14 @@ describe("git_clone", function gitCloneSuite() {
 		git_clone(testrepo)
 			.then(function onResolve(res) {
 				var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt:onResolve');
-				debug("res %j", res);
+				debug("res %j", res.options);
+				
 				res.should.be.ok;
+				
 				res.results.should.match(/OK/);
 				// verify default options were set
 				res.options.should.eql({
-					targetDirectory:"/tmp/"
+					targetDirectory:"/tmp"
 				});
 				done();
 			}, function onReject(err) {
@@ -75,7 +75,7 @@ describe("git_clone", function gitCloneSuite() {
 				res.results.should.match(/OK/);
 				// verify options are merged with defaults
 				res.options.should.eql({
-					targetDirectory:"/tmp/",
+					targetDirectory:"/tmp",
 					testOption:"TEST"
 				});
 				done();
