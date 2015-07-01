@@ -13,7 +13,7 @@ describe("git_clone", function gitCloneSuite() {
 	beforeEach(function beforeEachTest(done) {
 		var debug=require('debug')('xuexi:git:test:gitCloneSuite:after');
 		debug("removing /tmp/xuexi.git");
-		rimraf("/tmp/xuexi.git", function() {
+		rimraf("/tmp/xuexi", function() {
 			done();
 		});
 	});
@@ -21,7 +21,7 @@ describe("git_clone", function gitCloneSuite() {
 	after(function afterAllTests(done) {
 		var debug=require('debug')('xuexi:git:test:gitCloneSuite:after');
 		debug("removing /tmp/xuexi.git");
-		rimraf("/tmp/xuexi.git", function() {
+		rimraf("/tmp/xuexi", function() {
 			done();
 		});
 	});
@@ -56,24 +56,22 @@ describe("git_clone", function gitCloneSuite() {
 	it("should override default options with given options", function doIt(done) {
 		var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt');
 		var git=new Git(testrepo);
-		git.clone({ targetDirectory:"/var/tmp" })
-			.then(function onResolve(res) {
-				var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt:onResolve');
-				debug("res %j", res.options);
-				res.should.be.ok;
-				res.should.match(/^\/var\/tmp\//);
-				debug("removing /tmp/xuexi.git");
-				try {
-					debug("removing /var/tmp/xuexi.git");
-					fs.removeSync("/var/tmp/xuexi.git");
-				} catch(e) {
-					debug("error removing /var/tmp/xuexi.git %j", e);
-				}
-				done();
-			}, function onReject(err) {
-				var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt:onResolve');
-				should.fail("promise rejected");
-			});
+		rimraf("/var/tmp/xuexi", function() {
+			git.clone({ targetDirectory:"/var/tmp" })
+				.then(function onResolve(res) {
+					var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt:onResolve');
+					debug("res %j", res.options);
+					res.should.be.ok;
+					res.should.match(/^\/var\/tmp\//);
+					debug("removing /var/tmp/xuexi");
+					rimraf("/var/tmp/xuexi.git", function() {
+						done();
+					});
+				}, function onReject(err) {
+					var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt:onResolve');
+					should.fail("promise rejected");
+				});
+		});
 	});
 	it("should resolve the returned promise if no error happens", function doIt(done) {
 		var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt');
