@@ -2,7 +2,9 @@ var should=require('should'),
 	git_clone=require('../lib/git.clone'),
 	testrepo="https://github.com/coyotebringsfire/xuexi.git",
 	debug=require('debug')('xuexi:git:test'),
-	fs=require('fs-plus');
+	fs=require('fs-plus'),
+	Git=require('../lib/git'),
+  rimraf=require('rimraf');
 
 describe("git_clone", function gitCloneSuite() {
 	this.timeout(0);
@@ -10,55 +12,40 @@ describe("git_clone", function gitCloneSuite() {
 
 	beforeEach(function beforeEachTest(done) {
 		var debug=require('debug')('xuexi:git:test:gitCloneSuite:after');
-		debug("removing /tmp/xuexi");
-		try {
-			debug("removing /tmp/xuexi");
-			fs.removeSync("/tmp/xuexi");
-		} catch(e) {
-			debug("error removing /tmp/xuexi %j", e);
-		}
-		done();
+		debug("removing /tmp/xuexi.git");
+		rimraf("/tmp/xuexi.git", function() {
+			done();
+		});
 	});
 
 	after(function afterAllTests(done) {
 		var debug=require('debug')('xuexi:git:test:gitCloneSuite:after');
-		debug("removing /tmp/xuexi");
-		try {
-			debug("removing /tmp/xuexi");
-			fs.removeSync("/tmp/xuexi");
-		} catch(e) {
-			debug("error removing /tmp/xuexi %j", e);
-		}
-		done();
+		debug("removing /tmp/xuexi.git");
+		rimraf("/tmp/xuexi.git", function() {
+			done();
+		});
 	});
 
-	it("should reject the returned promise if no repo url is given", function doIt(done) {
+	it("should throw an exception if no repo url is given", function doIt(done) {
 		var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt');
 		debug('doing it');
-		git_clone()
-			.then(function onResolve(res) {
-				var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt:onResolve');
-				should.fail("promise resolved");
-				debug('resolved');
-				done();
-			}, function onReject(err) {
-				var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt:onReject');
-				debug('rejected');
-				done();
-			});
+		(function () { var git=new Git(); }).should.throw();
+		done();
 	});
 	it("should use default options if none are given", function doIt(done) {
 		var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt');
-		git_clone(testrepo)
+		var git=new Git(testrepo);
+		git.clone()
 			.then(function onResolve(res) {
 				var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt:onResolve');
-				debug("res %j", res.results);
+				debug("res %j", res);
 				//res.should.be.ok;
 				//res.results.should.match(/OK/);
 				// verify default options were set
 				//res.options.should.eql({
 				//	targetDirectory:"/tmp/"
 				//});
+				res.should.match(/^\/tmp\//);
 				debug("done");
 				done();
 			}, function onReject(err) {
@@ -68,15 +55,20 @@ describe("git_clone", function gitCloneSuite() {
 	});
 	it("should override default options with given options", function doIt(done) {
 		var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt');
-		git_clone(testrepo, { testOption:"TEST" })
+		var git=new Git(testrepo);
+		git.clone({ targetDirectory:"/var/tmp" })
 			.then(function onResolve(res) {
 				var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt:onResolve');
 				debug("res %j", res.options);
 				res.should.be.ok;
-				res.results.should.match(/OK/);
-				// verify options are merged with defaults
-				res.options.targetDirectory.should.eql("/tmp");
-				res.options.testOption.should.eql("TEST");
+				res.should.match(/^\/var\/tmp\//);
+				debug("removing /tmp/xuexi.git");
+				try {
+					debug("removing /var/tmp/xuexi.git");
+					fs.removeSync("/var/tmp/xuexi.git");
+				} catch(e) {
+					debug("error removing /var/tmp/xuexi.git %j", e);
+				}
 				done();
 			}, function onReject(err) {
 				var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt:onResolve');
@@ -85,12 +77,13 @@ describe("git_clone", function gitCloneSuite() {
 	});
 	it("should resolve the returned promise if no error happens", function doIt(done) {
 		var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt');
-		git_clone(testrepo)
+		var git=new Git(testrepo);
+		git.clone()
 			.then(function onResolve(res) {
 				var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt:onResolve');
 				debug("res %j", res);
 				res.should.be.ok;
-				res.results.should.match(/OK/);
+				res.should.match(/^\/tmp\//);
 				done();
 			}, function onReject(err) {
 				var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt:onResolve');
