@@ -1,18 +1,39 @@
-var should=require('should');
+var should=require('should'),
+    testrepo="https://github.com/coyotebringsfire/xuexi.git",
+    rimraf=require('rimraf');
 
 describe("git#processCommits", function processCommitsSuite() {
   this.timeout(0);
   var debug=require('debug')('git:processCommits:test:processCommitsSuite'),
       testRepo="/Users/aumkara/workspace/MuMoo";
 
-  describe.only("promise style", function promiseStyleSuite() {
+  beforeEach(function beforeEachTest(done) {
+    var debug=require('debug')('xuexi:git:test:gitCloneSuite:after');
+    debug("removing /tmp/xuexi.git");
+    rimraf("/tmp/xuexi.git", function(err) {
+      debug("DELETE DONE %j", err);
+      done();
+    });
+  });
+
+  after(function afterAllTests(done) {
+    var debug=require('debug')('xuexi:git:test:gitCloneSuite:after');
+    debug("removing /tmp/xuexi.git");
+    rimraf("/tmp/xuexi.git", function(err) {
+      debug("DELETE DONE %j", err);
+      done();
+    });
+  });
+
+  describe("promise style", function promiseStyleSuite() {
     var debug=require('debug')('git:processCommits:test:promiseStyleSuite'),
         testRepo;
 
-    it("should reject the returned promise if called without a hash of commits", function doIt(done) {
+    it("should reject the returned promise if called without an array of commits", function doIt(done) {
       var debug=require('debug')('git:processCommits:test:promiseStyleSuite:doIt'),
           Git=require('../lib/git');
-      Git.processCommits()
+      var git=new Git(testrepo);
+      git.processCommits()
         .then(function onResolve(msg) {
           var debug=require('debug')('git:processCommits:test:promiseStyleSuite:doIt:onResolve');
           should.fail("Promise was resolved: %j", msg);
@@ -23,10 +44,11 @@ describe("git#processCommits", function processCommitsSuite() {
           done();
         });
     });
-    it("should reject the returned promise if called with a non-hash argument", function doIt(done) {
+    it("should reject the returned promise if called with a non-object argument", function doIt(done) {
       var debug=require('debug')('git:processCommits:test:promiseStyleSuite:doIt'),
           Git=require('../lib/git');
-      Git.processCommits([{"commit":"INVALIDARGUMENT"}])
+      var git=new Git(testrepo);
+      git.processCommits([{"commit":"INVALIDARGUMENT"}])
         .then(function onResolve(msg) {
           var debug=require('debug')('git:processCommits:test:promiseStyleSuite:doIt:onResolve');
           should.fail("Promise was resolved: %j", msg);
@@ -37,29 +59,24 @@ describe("git#processCommits", function processCommitsSuite() {
           done();
         });
     });
-    it.only("should resolve the returned promise if no errors happen during processing", function(done) {
+    it("should resolve the returned promise if no errors happen during processing", function(done) {
       var debug=require('debug')('git:processCommits:test:promiseStyleSuite:doIt'),
           Git=require('../lib/git');
-      testRepo="/Users/aumkara/workspace/MuMoo";
-      //testRepo=__dirname+"/testrepo";
-      Git.getCommits({repo:testRepo})
-        .then(function getCommitsResolved(commits) {
-          Git.processCommits(commits[0])
-            .then(function onResolve(trainedModel) {
-              var debug=require('debug')('git:processCommits:test:promiseStyleSuite:doIt:onResolve');
-              debug("Promise was resolved: %j", trainedModel);
-              trainedModel.should.be.ok;
-              done();
-            }, function onReject(err) {
-              var debug=require('debug')('git:processCommits:test:promiseStyleSuite:doIt:onReject');
-              should.fail("Promise was rejected: %j", err);
-              done();
-            });
-        }, function getCommitsRejected(err) {
-          should.fail(new Error(err));
-        });
+      var git=new Git(testrepo);
+      git.clone()
+          .then(git.getCommits)
+          .then(git.processCommits)
+          .then(function onResolve(trainedModel) {
+            var debug=require('debug')('git:processCommits:test:promiseStyleSuite:doIt:onResolve');
+            debug("Promise was resolved: %j", trainedModel);
+            trainedModel.should.be.ok;
+            done();
+          }, function onReject(err) {
+            var debug=require('debug')('git:processCommits:test:promiseStyleSuite:doIt:onReject');
+            should.fail("Promise was rejected: %j", err);
+            done();
+          });
     });
-
   });
 
   describe("stats", function statsSuite() {
@@ -67,10 +84,10 @@ describe("git#processCommits", function processCommitsSuite() {
     
     it("should include average lines changed for each commit", function doIt(done) {
       var debug=require('debug')('git:processCommits:test:statsSuite:doIt'),
-          Git=require('../lib/git');
-
+          Git=require('../lib/git'),
+          git=new Git(testrepo);
       //testRepo=__dirname+"/testrepo";
-      Git.processCommits({repo:testRepo})
+      git.processCommits()
         .then(function onResolve(commits) {
           var debug=require('debug')('git:processCommits:test:statsSuite:doIt:onResolve'),
               k, commitToVerify;
@@ -95,10 +112,11 @@ describe("git#processCommits", function processCommitsSuite() {
 
     it("should include variance lines changed for each commit", function doIt(done) {
       var debug=require('debug')('git:processCommits:test:statsSuite:doIt'),
-          Git=require('../lib/git');
+          Git=require('../lib/git'),
+          git=new Git(testrepo);
 
       //testRepo=__dirname+"/testrepo";
-      Git.processCommits({repo:testRepo})
+      git.processCommits()
         .then(function onResolve(commits) {
           var debug=require('debug')('git:processCommits:test:statsSuite:doIt:onResolve'),
               k, commitToVerify;
@@ -123,10 +141,11 @@ describe("git#processCommits", function processCommitsSuite() {
 
     it("should include standard deviation lines changed for each commit", function doIt(done) {
       var debug=require('debug')('git:processCommits:test:statsSuite:doIt'),
-          Git=require('../lib/git');
+          Git=require('../lib/git'),
+          git=new Git(testrepo);
 
       //testRepo=__dirname+"/testrepo";
-      Git.processCommits({repo:testRepo})
+      git.processCommits()
         .then(function onResolve(commits) {
           var debug=require('debug')('git:processCommits:test:statsSuite:doIt:onResolve'),
               k, commitToVerify;
