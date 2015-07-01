@@ -2,7 +2,8 @@ var should=require('should'),
     testrepo="https://github.com/coyotebringsfire/xuexi.git",
     debug=require('debug')('git:getCommits:test'),
     fs=require('fs-plus'),
-    async=require('async');
+    async=require('async'),
+    rimraf=require('rimraf');
 
 describe("git#getCommits", function getCommitsSuite() {
   this.timeout(0);
@@ -11,26 +12,18 @@ describe("git#getCommits", function getCommitsSuite() {
 
   beforeEach(function beforeEachTest(done) {
     var debug=require('debug')('xuexi:git:test:gitCloneSuite:after');
-    debug("removing /tmp/xuexi.git");
-    try {
-      debug("removing /tmp/xuexi.git");
-      fs.removeSync("/tmp/xuexi.git");
-    } catch(e) {
-      debug("error removing /tmp/xuexi.git %j", e);
-    }
-    done();
+    debug("removing /tmp/xuexi");
+    rimraf("/tmp/xuexi", function() {
+      done();
+    });
   });
 
   after(function afterAllTests(done) {
     var debug=require('debug')('xuexi:git:test:gitCloneSuite:after');
-    debug("removing /tmp/xuexi.git");
-    try {
-      debug("removing /tmp/xuexi.git");
-      fs.removeSync("/tmp/xuexi.git");
-    } catch(e) {
-      debug("error removing /tmp/xuexi.git %j", e);
-    }
-    done();
+    debug("removing /tmp/xuexi");
+    rimraf("/tmp/xuexi", function() {
+      done();
+    });
   });
 
   describe("promise style", function promiseStyleSuite() {
@@ -72,10 +65,11 @@ describe("git#getCommits", function getCommitsSuite() {
           done();
         });
     });
-    it("should resolve the returned promise if no errors happen during training", function(done) {
+    it("should resolve the returned promise if no errors happen while getting commits", function(done) {
       var debug=require('debug')('git:getCommits:test:promiseStyleSuite:doIt'),
           Git=require('../lib/git');
       //testRepo="/Users/aumkara/workspace/MuMoo";
+      debug("cloning repo %s", testrepo);
       git=new Git(testrepo);
       git.clone()
         .then(git.getCommits)
