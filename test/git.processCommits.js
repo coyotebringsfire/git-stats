@@ -9,8 +9,8 @@ describe("git#processCommits", function processCommitsSuite() {
 
   beforeEach(function beforeEachTest(done) {
     var debug=require('debug')('xuexi:git:gitCloneSuite:after:test');
-    debug("removing /tmp/xuexi.git");
-    rimraf("/tmp/xuexi.git", function(err) {
+    debug("removing /tmp/xuexi");
+    rimraf("/tmp/xuexi", function(err) {
       debug("DELETE DONE %j", err);
       done();
     });
@@ -18,8 +18,8 @@ describe("git#processCommits", function processCommitsSuite() {
 
   after(function afterAllTests(done) {
     var debug=require('debug')('xuexi:git:gitCloneSuite:after:test');
-    debug("removing /tmp/xuexi.git");
-    rimraf("/tmp/xuexi.git", function(err) {
+    debug("removing /tmp/xuexi");
+    rimraf("/tmp/xuexi", function(err) {
       debug("DELETE DONE %j", err);
       done();
     });
@@ -66,10 +66,12 @@ describe("git#processCommits", function processCommitsSuite() {
       git.clone()
           .then(git.getCommits)
           .then(git.processCommits)
-          .then(function onResolve(trainedModel) {
+          .then(function onResolve(response) {
             var debug=require('debug')('xuexi:git:processCommits:promiseStyleSuite:doIt:onResolve:test');
-            debug("Promise was resolved: %j", trainedModel);
-            trainedModel.should.be.ok;
+            debug("Promise was resolved: %j", git);
+            response.should.be.ok;
+            response.should.be.an.instanceOf(Array);
+            //git.processedCommits.should.be.ok;
             done();
           }, function onReject(err) {
             var debug=require('debug')('xuexi:git:processCommits:promiseStyleSuite:doIt:onReject:test');
