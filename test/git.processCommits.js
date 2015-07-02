@@ -4,11 +4,11 @@ var should=require('should'),
 
 describe("git#processCommits", function processCommitsSuite() {
   this.timeout(0);
-  var debug=require('debug')('git:processCommits:test:processCommitsSuite'),
+  var debug=require('debug')('xuexi:git:processCommits:test:processCommitsSuite:test'),
       testRepo="/Users/aumkara/workspace/MuMoo";
 
   beforeEach(function beforeEachTest(done) {
-    var debug=require('debug')('xuexi:git:test:gitCloneSuite:after');
+    var debug=require('debug')('xuexi:git:gitCloneSuite:after:test');
     debug("removing /tmp/xuexi.git");
     rimraf("/tmp/xuexi.git", function(err) {
       debug("DELETE DONE %j", err);
@@ -17,7 +17,7 @@ describe("git#processCommits", function processCommitsSuite() {
   });
 
   after(function afterAllTests(done) {
-    var debug=require('debug')('xuexi:git:test:gitCloneSuite:after');
+    var debug=require('debug')('xuexi:git:gitCloneSuite:after:test');
     debug("removing /tmp/xuexi.git");
     rimraf("/tmp/xuexi.git", function(err) {
       debug("DELETE DONE %j", err);
@@ -26,53 +26,53 @@ describe("git#processCommits", function processCommitsSuite() {
   });
 
   describe("promise style", function promiseStyleSuite() {
-    var debug=require('debug')('git:processCommits:test:promiseStyleSuite'),
+    var debug=require('debug')('xuexi:git:processCommits:promiseStyleSuite:test'),
         testRepo;
 
     it("should reject the returned promise if called without an array of commits", function doIt(done) {
-      var debug=require('debug')('git:processCommits:test:promiseStyleSuite:doIt'),
+      var debug=require('debug')('xuexi:git:processCommits:promiseStyleSuite:doIt:test'),
           Git=require('../lib/git');
       var git=new Git(testrepo);
       git.processCommits()
         .then(function onResolve(msg) {
-          var debug=require('debug')('git:processCommits:test:promiseStyleSuite:doIt:onResolve');
+          var debug=require('debug')('xuexi:git:processCommits:promiseStyleSuite:doIt:onResolve:test');
           should.fail("Promise was resolved: %j", msg);
           done();
         }, function onReject(err) {
-          var debug=require('debug')('git:processCommits:test:promiseStyleSuite:doIt:onReject');
+          var debug=require('debug')('xuexi:git:processCommits:promiseStyleSuite:doIt:onReject:test');
           should(err).be.ok;
           done();
         });
     });
     it("should reject the returned promise if called with a non-object argument", function doIt(done) {
-      var debug=require('debug')('git:processCommits:test:promiseStyleSuite:doIt'),
+      var debug=require('debug')('xuexi:git:processCommits:promiseStyleSuite:doIt:test'),
           Git=require('../lib/git');
       var git=new Git(testrepo);
       git.processCommits([{"commit":"INVALIDARGUMENT"}])
         .then(function onResolve(msg) {
-          var debug=require('debug')('git:processCommits:test:promiseStyleSuite:doIt:onResolve');
+          var debug=require('debug')('xuexi:git:processCommits:promiseStyleSuite:doIt:onResolve:test');
           should.fail("Promise was resolved: %j", msg);
           done();
         }, function onReject(err) {
-          var debug=require('debug')('git:processCommits:test:promiseStyleSuite:doIt:onReject');
+          var debug=require('debug')('xuexi:git:processCommits:promiseStyleSuite:doIt:onReject:test');
           should(err).be.ok;
           done();
         });
     });
     it("should resolve the returned promise if no errors happen during processing", function(done) {
-      var debug=require('debug')('git:processCommits:test:promiseStyleSuite:doIt'),
+      var debug=require('debug')('xuexi:git:processCommits:promiseStyleSuite:doIt:test'),
           Git=require('../lib/git');
       var git=new Git(testrepo);
       git.clone()
           .then(git.getCommits)
           .then(git.processCommits)
           .then(function onResolve(trainedModel) {
-            var debug=require('debug')('git:processCommits:test:promiseStyleSuite:doIt:onResolve');
+            var debug=require('debug')('xuexi:git:processCommits:promiseStyleSuite:doIt:onResolve:test');
             debug("Promise was resolved: %j", trainedModel);
             trainedModel.should.be.ok;
             done();
           }, function onReject(err) {
-            var debug=require('debug')('git:processCommits:test:promiseStyleSuite:doIt:onReject');
+            var debug=require('debug')('xuexi:git:processCommits:promiseStyleSuite:doIt:onReject:test');
             should.fail("Promise was rejected: %j", err);
             done();
           });
@@ -80,16 +80,16 @@ describe("git#processCommits", function processCommitsSuite() {
   });
 
   describe("stats", function statsSuite() {
-    var debug=require('debug')('git:processCommits:test:statsSuite');
+    var debug=require('debug')('xuexi:git:processCommits:statsSuite:test');
     
     it("should include average lines changed for each commit", function doIt(done) {
-      var debug=require('debug')('git:processCommits:test:statsSuite:doIt'),
+      var debug=require('debug')('xuexi:git:processCommits:statsSuite:doIt:test'),
           Git=require('../lib/git'),
           git=new Git(testrepo);
       //testRepo=__dirname+"/testrepo";
       git.processCommits()
         .then(function onResolve(commits) {
-          var debug=require('debug')('git:processCommits:test:statsSuite:doIt:onResolve'),
+          var debug=require('debug')('xuexi:git:processCommits:statsSuite:doIt:onResolve:test'),
               k, commitToVerify;
           debug("processCommits resolved");
           for( k in commits[0] ) {
@@ -102,7 +102,7 @@ describe("git#processCommits", function processCommitsSuite() {
           }
           done();
         }, function onReject(err) {
-          var debug=require('debug')('git:processCommits:test:statsSuite:doIt:onReject');
+          var debug=require('debug')('xuexi:git:processCommits:statsSuite:doIt:onReject:test');
           debug("promise rejected %j", err);
           should.fail;
           //should.fail("Promise was rejected: %j", err);
@@ -111,14 +111,14 @@ describe("git#processCommits", function processCommitsSuite() {
     });
 
     it("should include variance lines changed for each commit", function doIt(done) {
-      var debug=require('debug')('git:processCommits:test:statsSuite:doIt'),
+      var debug=require('debug')('xuexi:git:processCommits:statsSuite:doIt:test'),
           Git=require('../lib/git'),
           git=new Git(testrepo);
 
       //testRepo=__dirname+"/testrepo";
       git.processCommits()
         .then(function onResolve(commits) {
-          var debug=require('debug')('git:processCommits:test:statsSuite:doIt:onResolve'),
+          var debug=require('debug')('xuexi:git:processCommits:statsSuite:doIt:onResolve:test'),
               k, commitToVerify;
           debug("processCommits resolved");
           for( k in commits[0] ) {
@@ -131,7 +131,7 @@ describe("git#processCommits", function processCommitsSuite() {
           }
           done();
         }, function onReject(err) {
-          var debug=require('debug')('git:processCommits:test:statsSuite:doIt:onReject');
+          var debug=require('debug')('xuexi:git:processCommits:statsSuite:doIt:onReject:test');
           debug("promise rejected %j", err);
           should.fail;
           //should.fail("Promise was rejected: %j", err);
@@ -140,14 +140,14 @@ describe("git#processCommits", function processCommitsSuite() {
     });
 
     it("should include standard deviation lines changed for each commit", function doIt(done) {
-      var debug=require('debug')('git:processCommits:test:statsSuite:doIt'),
+      var debug=require('debug')('xuexi:git:processCommits:statsSuite:doIt:test'),
           Git=require('../lib/git'),
           git=new Git(testrepo);
 
       //testRepo=__dirname+"/testrepo";
       git.processCommits()
         .then(function onResolve(commits) {
-          var debug=require('debug')('git:processCommits:test:statsSuite:doIt:onResolve'),
+          var debug=require('debug')('xuexi:git:processCommits:statsSuite:doIt:onResolve:test'),
               k, commitToVerify;
           debug("processCommits resolved");
           for( k in commits[0] ) {
@@ -160,7 +160,7 @@ describe("git#processCommits", function processCommitsSuite() {
           }
           done();
         }, function onReject(err) {
-          var debug=require('debug')('git:processCommits:test:statsSuite:doIt:onReject');
+          var debug=require('debug')('xuexi:git:processCommits:statsSuite:doIt:onReject:test');
           debug("promise rejected %j", err);
           should.fail;
           //should.fail("Promise was rejected: %j", err);

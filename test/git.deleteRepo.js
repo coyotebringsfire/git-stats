@@ -16,7 +16,7 @@ describe("#deleteRepo", function deleteRepoTestSuite() {
         should.fail("promise was resolved");
         done();
       }, function onReject(err) {
-        var debug=require('debug')('test:git:deleteRepo:deleteRepoTestSuite:doIt:onReject');
+        var debug=require('debug')('xuexi:git:deleteRepo:deleteRepoTestSuite:doIt:onReject:test');
         debug("%j", err);
         err.should.be.ok;
         debug("%s", err.message);
