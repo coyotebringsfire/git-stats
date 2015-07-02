@@ -7,7 +7,11 @@ describe("tounao", function tounaoSuite() {
     brain.brain.should.eql({test:"test"});
     done();
   });
-  it("should have a train function", function doIt(done) {});
+  it("should have a train function", function doIt(done) {
+    var Brain=require("../lib/tounao"), brain=new Brain({test:"test"});
+    brain.train.should.be.a.Function;
+    done();
+  });
   it("should have a question function", function doIt(done) {});
   it("should have an export function", function doIt(done) {});
   describe("#train", function trainFunction() {
