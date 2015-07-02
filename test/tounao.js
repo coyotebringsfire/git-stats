@@ -17,7 +17,11 @@ describe("tounao", function tounaoSuite() {
     brain.question.should.be.a.Function;
     done();
   });
-  it("should have an export function", function doIt(done) {});
+  it("should have an export function", function doIt(done) {
+    var Brain=require("../lib/tounao"), brain=new Brain({test:"test"});
+    brain.export.should.be.a.Function;
+    done();
+  });
   describe("#train", function trainFunction() {
     it("should reject the returned promise if not passed an array of data as the first argument", function doIt(done) { should.fail(); });
     it("should resolve the returned promise if no errors happen during processing", function doIt(done) { should.fail(); });
