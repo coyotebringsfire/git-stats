@@ -12,7 +12,11 @@ describe("tounao", function tounaoSuite() {
     brain.train.should.be.a.Function;
     done();
   });
-  it("should have a question function", function doIt(done) {});
+  it("should have a question function", function doIt(done) {
+    var Brain=require("../lib/tounao"), brain=new Brain({test:"test"});
+    brain.question.should.be.a.Function;
+    done();
+  });
   it("should have an export function", function doIt(done) {});
   describe("#train", function trainFunction() {
     it("should reject the returned promise if not passed an array of data as the first argument", function doIt(done) { should.fail(); });
