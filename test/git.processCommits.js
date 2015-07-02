@@ -70,7 +70,7 @@ describe("git#processCommits", function processCommitsSuite() {
             var debug=require('debug')('xuexi:git:processCommits:promiseStyleSuite:doIt:onResolve:test');
             debug("Promise was resolved: %j", git);
             response.should.be.ok;
-            response.should.be.an.instanceOf(Array);
+            response.should.be.an.instanceOf(Object);
             //git.processedCommits.should.be.ok;
             done();
           }, function onReject(err) {
