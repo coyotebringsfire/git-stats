@@ -8,10 +8,10 @@ var should=require('should'),
 
 describe("git_clone", function gitCloneSuite() {
 	this.timeout(0);
-	var debug=require('debug')('xuexi:git:test:gitCloneSuite');
+	var debug=require('debug')('xuexi:git:gitCloneSuite:test');
 
 	beforeEach(function beforeEachTest(done) {
-		var debug=require('debug')('xuexi:git:test:gitCloneSuite:after');
+		var debug=require('debug')('xuexi:git:gitCloneSuite:after:test');
 		debug("removing /tmp/xuexi.git");
 		rimraf("/tmp/xuexi", function() {
 			done();
@@ -19,7 +19,7 @@ describe("git_clone", function gitCloneSuite() {
 	});
 
 	after(function afterAllTests(done) {
-		var debug=require('debug')('xuexi:git:test:gitCloneSuite:after');
+		var debug=require('debug')('xuexi:git:gitCloneSuite:after:test');
 		debug("removing /tmp/xuexi.git");
 		rimraf("/tmp/xuexi", function() {
 			done();
@@ -27,17 +27,17 @@ describe("git_clone", function gitCloneSuite() {
 	});
 
 	it("should throw an exception if no repo url is given", function doIt(done) {
-		var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt');
+		var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:test');
 		debug('doing it');
 		(function () { var git=new Git(); }).should.throw();
 		done();
 	});
 	it("should use default options if none are given", function doIt(done) {
-		var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt');
+		var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:test');
 		var git=new Git(testrepo);
 		git.clone()
 			.then(function onResolve(res) {
-				var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt:onResolve');
+				var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:onResolve:test');
 				debug("res %j", res);
 				//res.should.be.ok;
 				//res.results.should.match(/OK/);
@@ -49,17 +49,17 @@ describe("git_clone", function gitCloneSuite() {
 				debug("done");
 				done();
 			}, function onReject(err) {
-				var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt:onResolve');
+				var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:onResolve:test');
 				should.fail("promise rejected");
 			});
 	});
 	it("should override default options with given options", function doIt(done) {
-		var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt');
+		var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:test');
 		var git=new Git(testrepo);
 		rimraf("/var/tmp/xuexi", function() {
 			git.clone({ targetDirectory:"/var/tmp" })
 				.then(function onResolve(res) {
-					var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt:onResolve');
+					var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:onResolve:test');
 					debug("res %j", res.options);
 					res.should.be.ok;
 					res.should.match(/^\/var\/tmp\//);
@@ -68,23 +68,23 @@ describe("git_clone", function gitCloneSuite() {
 						done();
 					});
 				}, function onReject(err) {
-					var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt:onResolve');
+					var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:onResolve:test');
 					should.fail("promise rejected");
 				});
 		});
 	});
 	it("should resolve the returned promise if no error happens", function doIt(done) {
-		var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt');
+		var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:test');
 		var git=new Git(testrepo);
 		git.clone()
 			.then(function onResolve(res) {
-				var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt:onResolve');
+				var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:onResolve:test');
 				debug("res %j", res);
 				res.should.be.ok;
 				res.should.match(/^\/tmp\//);
 				done();
 			}, function onReject(err) {
-				var debug=require('debug')('xuexi:git:test:gitCloneSuite:doIt:onResolve');
+				var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:onResolve:test');
 				should.fail("promise rejected");
 			});
 	});
