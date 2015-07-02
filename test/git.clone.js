@@ -88,4 +88,18 @@ describe("git_clone", function gitCloneSuite() {
 				should.fail("promise rejected");
 			});
 	});
+	it("should insert a gitDir property on the calling object", function doIt(done) {
+		var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:test');
+		var git=new Git(testrepo);
+		git.clone()
+			.then(function onResolve(res) {
+				var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:onResolve:test');
+				debug("gitDir %j", git.gitDir);
+				git.gitDir.should.match(/\/tmp\/xuexi/);
+				done();
+			}, function onReject(err) {
+				var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:onResolve:test');
+				should.fail("promise rejected");
+			});
+	});
 });
