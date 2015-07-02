@@ -36,8 +36,15 @@ describe("#deleteRepo", function deleteRepoTestSuite() {
       });
   });
   it("should reject the returned promise if an error happens when deleting the repo", function doIt(done) {
-    fs.chmodSync('./testdir', 0100);
-    deleteRepo("./testdir")
+    var repoDir="";
+    if( process.cwd().match(/test$/) ) {
+      repoDir="./testdir";
+    } else {
+      repoDir="./test/testdir";
+    }
+    fs.chmodSync(repoDir, 0100);
+    
+    deleteRepo(repoDir)
       .then(function onResolve() {
         should.fail('promise was resolved');
         done();
@@ -45,8 +52,8 @@ describe("#deleteRepo", function deleteRepoTestSuite() {
         debug("err:%j", err.code);
         err.should.be.ok;
         err.code.should.equal("EACCES");
-        fs.existsSync('./testdir').should.be.ok;
-        fs.chmodSync('./testdir', 0777);
+        fs.existsSync(repoDir).should.be.ok;
+        fs.chmodSync(repoDir, 0777);
         done();
       });
   });
