@@ -23,6 +23,7 @@
   "homepage": "https://github.com/coyotebringsfire/xuexi",
   "dependencies": {
     "async": "^1.2.0",
+    "brain": "^0.7.0",
     "comandante": "0.0.1",
     "debug": "^2.2.0",
     "fs-plus": "^2.8.1",
