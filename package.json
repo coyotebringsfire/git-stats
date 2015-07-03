@@ -33,7 +33,7 @@
     "merge": "^1.2.0",
     "nodegit": "^0.4.0",
     "noderank": "^0.0.6",
-    "noderank-nightly": "0.0.5",
+    "noderank-nightly": "0.0.12",
     "npm-registry": "^0.1.13",
     "q": "^1.4.1",
     "rimraf": "^2.4.0",
