@@ -76,7 +76,6 @@ describe("git#getCommits", function getCommitsSuite() {
         .then(function onResolve(trainedModel) {
           var debug=require('debug')('xuexi:git:getCommits:promiseStyleSuite:doIt:onResolve:test');
           debug("Promise was resolved: %j", trainedModel);
-          git.rawCommits.should.be.ok;
           trainedModel.should.be.ok;
           done();
         }, function onReject(err) {
