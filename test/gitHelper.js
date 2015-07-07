@@ -14,6 +14,6 @@ describe("gitHelper", function gitHelperSuite() {
     helper.on('exit', function() {
       done();
     });
-    helper.send({repo:process.cwd});
+    helper.send({repo:process.cwd()});
   });
 });
