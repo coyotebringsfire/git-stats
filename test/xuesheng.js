@@ -3,6 +3,7 @@ var should=require('should'),
     child_process=require('child_process');
 
 describe("xuesheng", function xueshengSuite() {
+  this.timeout(0);
   it("should reject the returned promise, if an invalid module is passed via IPC", function doIt(done) {
     var child;
     if( process.cwd().match(/test$/) ) {
