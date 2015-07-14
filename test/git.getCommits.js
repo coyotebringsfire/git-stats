@@ -30,56 +30,28 @@ describe("git#getCommits", function getCommitsSuite() {
     var debug=require('debug')('xuexi:git:getCommits:promiseStyleSuite:test'),
         testRepo;
 
-    it("should reject the returned promise if called without a repo", function doIt(done) {
-      var debug=require('debug')('xuexi:git:getCommits:promiseStyleSuite:doIt:test'),
-          Git=require('../lib/git');
-      git=new Git(testrepo);
-      git.getCommits()
-        .then(function onResolve(msg) {
-          var debug=require('debug')('xuexi:git:getCommits:promiseStyleSuite:doIt:onResolve:test');
-          should.fail("Promise was resolved: %j", msg);
-          done();
-        }, function onReject(err) {
-          var debug=require('debug')('git:getCommits:promiseStyleSuite:doIt:onReject:test');
-          err.should.be.ok;
-          debug("reject error: %j", err);
-          done();
-        });
-    });
-    it("should reject the returned promise if called with an invalid repo", function doIt(done) {
-      var debug=require('debug')('xuexi:git:getCommits:promiseStyleSuite:doIt:test'),
-          INVALID_REPO="/invalidrepo",
-          Git=require('../lib/git');
-      git=new Git(testrepo);
-      git.getCommits()
-        .then(function onResolve(msg) {
-          var debug=require('debug')('xuexi:git:getCommits:promiseStyleSuite:doIt:onResolve:test');
-          should.fail("Promise was resolved: %j", msg);
-          debug("promise was resolved %j", msg);
-          done();
-        }, function onReject(err) {
-          var debug=require('debug')('xuexi:git:getCommits:promiseStyleSuite:doIt:onReject:test');
-          err.should.be.ok;
-          err.message.should.match(/missing required repo dir/);
-          debug("reject error: %s", err.message);
-          done();
-        });
-    });
     it("should resolve the returned promise if no errors happen while getting commits", function(done) {
       var debug=require('debug')('xuexi:git:getCommits:promiseStyleSuite:doIt:test'),
           Git=require('../lib/git');
       //testRepo="/Users/aumkara/workspace/MuMoo";
+      testRepo="https://github.com/coyotebringsfire/xuexi";
       debug("cloning repo %s", testrepo);
-      git=new Git(testrepo);
+      git=new Git(testrepo, "xuexi");
       git.clone()
-        .then(git.getCommits)
+        .then(function onCloneResolved() {
+          return git.getCommits();
+        })
         .then(function onResolve(trainedModel) {
           var debug=require('debug')('xuexi:git:getCommits:promiseStyleSuite:doIt:onResolve:test');
+          process.chdir(git.xuexi_home);
           debug("Promise was resolved: %j", trainedModel);
           trainedModel.should.be.ok;
+          git.commits.should.be.ok;
+          git.processCommits.should.be.type('function');
           done();
         }, function onReject(err) {
           var debug=require('debug')('xuexi:git:getCommits:promiseStyleSuite:doIt:onReject:test');
+          process.chdir(git.xuexi_home);
           should.fail("Promise was rejected: %j", err);
           done();
         });

@@ -3,24 +3,29 @@ var should=require('should'),
 	Git=require('../lib/git');
 
 describe("git library", function() {
-	it("should have train method", function(done) {
+  it("should have clone method", function(done) {
     var git=new Git("");
-		git.train.should.be.type('function');
+    git.clone.should.be.type('function');
+    done();
+  });
+	it("should not have train method", function(done) {
+    var git=new Git("");
+		should(git.train).not.be.type('function');
 		done();
 	});
-  it("should have getCommits method", function(done) {
+  it("should not have getCommits method", function(done) {
     var git=new Git("");
-    git.getCommits.should.be.type('function');
+    should(git.getCommits).not.be.type('function');
     done();
   });
-  it("should have processCommits method", function(done) {
+  it("should not have processCommits method", function(done) {
     var git=new Git("");
-    git.processCommits.should.be.type('function');
+    should(git.processCommits).not.be.type('function');
     done();
   });
-  it("should have predict method", function(done) {
+  it("should not have predict method", function(done) {
     var git=new Git("");
-    git.predict.should.be.type('function');
+    should(git.predict).not.be.type('function');
     done();
   });
 });

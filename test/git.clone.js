@@ -1,6 +1,6 @@
 var should=require('should'),
 	git_clone=require('../lib/git.clone'),
-	testrepo="https://github.com/coyotebringsfire/xuexi.git",
+	testrepo="https://github.com/coyotebringsfire/xuexi",
 	debug=require('debug')('xuexi:git:test'),
 	fs=require('fs-plus'),
 	Git=require('../lib/git'),
@@ -12,7 +12,8 @@ describe("git_clone", function gitCloneSuite() {
 
 	beforeEach(function beforeEachTest(done) {
 		var debug=require('debug')('xuexi:git:gitCloneSuite:after:test');
-		debug("removing /tmp/xuexi.git");
+		debug("removing /tmp/xuexi");
+		process.chdir("/");
 		rimraf("/tmp/xuexi", function() {
 			done();
 		});
@@ -20,7 +21,8 @@ describe("git_clone", function gitCloneSuite() {
 
 	after(function afterAllTests(done) {
 		var debug=require('debug')('xuexi:git:gitCloneSuite:after:test');
-		debug("removing /tmp/xuexi.git");
+		debug("removing /tmp/xuexi");
+		process.chdir("/");
 		rimraf("/tmp/xuexi", function() {
 			done();
 		});
@@ -34,18 +36,10 @@ describe("git_clone", function gitCloneSuite() {
 	});
 	it("should use default options if none are given", function doIt(done) {
 		var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:test');
-		var git=new Git(testrepo);
+		var git=new Git(testrepo, "xuexi");
 		git.clone()
-			.then(function onResolve(res) {
+			.then(function onResolve() {
 				var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:onResolve:test');
-				debug("res %j", res);
-				//res.should.be.ok;
-				//res.results.should.match(/OK/);
-				// verify default options were set
-				//res.options.should.eql({
-				//	targetDirectory:"/tmp/"
-				//});
-				res.should.match(/^\/tmp\//);
 				debug("done");
 				done();
 			}, function onReject(err) {
@@ -55,16 +49,16 @@ describe("git_clone", function gitCloneSuite() {
 	});
 	it("should override default options with given options", function doIt(done) {
 		var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:test');
-		var git=new Git(testrepo);
+		var git=new Git(testrepo, "xuexi");
+		process.chdir("/")
 		rimraf("/var/tmp/xuexi", function() {
 			git.clone({ targetDirectory:"/var/tmp" })
-				.then(function onResolve(res) {
+				.then(function onResolve() {
 					var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:onResolve:test');
-					debug("res %j", res.options);
-					res.should.be.ok;
-					res.should.match(/^\/var\/tmp\//);
+					git.gitDir.should.match(/^\/var\/tmp\//);
 					debug("removing /var/tmp/xuexi");
-					rimraf("/var/tmp/xuexi.git", function() {
+					process.chdir("/");
+					rimraf("/var/tmp/xuexi", function() {
 						done();
 					});
 				}, function onReject(err) {
@@ -75,13 +69,13 @@ describe("git_clone", function gitCloneSuite() {
 	});
 	it("should resolve the returned promise if no error happens", function doIt(done) {
 		var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:test');
-		var git=new Git(testrepo);
+		var git=new Git(testrepo, "xuexi");
 		git.clone()
-			.then(function onResolve(res) {
+			.then(function onResolve() {
 				var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:onResolve:test');
-				debug("res %j", res);
-				res.should.be.ok;
-				res.should.match(/^\/tmp\//);
+				git.gitDir.should.match(/^\/tmp\//);
+				git.getCommits.should.be.type("function");
+				git.deleteRepo.should.be.type("function");
 				done();
 			}, function onReject(err) {
 				var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:onResolve:test');
@@ -90,9 +84,9 @@ describe("git_clone", function gitCloneSuite() {
 	});
 	it("should insert a gitDir property on the calling object", function doIt(done) {
 		var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:test');
-		var git=new Git(testrepo);
+		var git=new Git(testrepo, "xuexi");
 		git.clone()
-			.then(function onResolve(res) {
+			.then(function onResolve() {
 				var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:onResolve:test');
 				debug("gitDir %j", git.gitDir);
 				git.gitDir.should.match(/\/tmp\/xuexi/);
