@@ -1,6 +1,7 @@
 var should=require('should');
 
 describe("#train", function trainFunction() {
+  this.timeout(0);
   it("should reject the returned promise if not passed an array of data as the first argument", function doIt(done) {
     var Brain=require("../lib/tounao"), brain=new Brain();
     brain.train()
@@ -21,6 +22,7 @@ describe("#train", function trainFunction() {
       .then(function onResolve(msg) {
         debug("%j", msg);
         msg.error.should.not.be.greaterThan(0.005);
+        brain.trained.should.be.ok;
         done();
       }, function onReject(err) {
         should.fail("promise was rejected");
