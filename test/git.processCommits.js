@@ -82,10 +82,8 @@ describe("git#processCommits", function processCommitsSuite() {
           })
           .then(function onProcessCommitsResolve() {
             var debug=require('debug')('xuexi:git:processCommits:promiseStyleSuite:doIt:onResolve:test');
-            process.chdir(git.xuexi_home);
-            debug("Promise was resolved: %j", git);
+            debug("Promise was resolved: %j", Object.keys(git));
             git.processedCommits.should.be.ok;
-            git.train.should.be.type("function");
             done();
           }, function onReject(err) {
             var debug=require('debug')('xuexi:git:processCommits:promiseStyleSuite:doIt:onReject:test');
