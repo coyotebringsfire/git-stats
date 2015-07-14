@@ -1,5 +1,4 @@
 var should=require('should'),
-	git_clone=require('../lib/git.clone'),
 	testrepo="https://github.com/coyotebringsfire/xuexi",
 	debug=require('debug')('xuexi:git:test'),
 	fs=require('fs-plus'),
@@ -13,7 +12,6 @@ describe("git_clone", function gitCloneSuite() {
 	beforeEach(function beforeEachTest(done) {
 		var debug=require('debug')('xuexi:git:gitCloneSuite:after:test');
 		debug("removing /tmp/xuexi");
-		process.chdir("/");
 		rimraf("/tmp/xuexi", function() {
 			done();
 		});
@@ -22,18 +20,11 @@ describe("git_clone", function gitCloneSuite() {
 	after(function afterAllTests(done) {
 		var debug=require('debug')('xuexi:git:gitCloneSuite:after:test');
 		debug("removing /tmp/xuexi");
-		process.chdir("/");
 		rimraf("/tmp/xuexi", function() {
 			done();
 		});
 	});
 
-	it("should throw an exception if no repo url is given", function doIt(done) {
-		var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:test');
-		debug('doing it');
-		(function () { var git=new Git(); }).should.throw();
-		done();
-	});
 	it("should use default options if none are given", function doIt(done) {
 		var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:test');
 		var git=new Git(testrepo, "xuexi");
@@ -50,14 +41,12 @@ describe("git_clone", function gitCloneSuite() {
 	it("should override default options with given options", function doIt(done) {
 		var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:test');
 		var git=new Git(testrepo, "xuexi");
-		process.chdir("/")
 		rimraf("/var/tmp/xuexi", function() {
 			git.clone({ targetDirectory:"/var/tmp" })
 				.then(function onResolve() {
 					var debug=require('debug')('xuexi:git:gitCloneSuite:doIt:onResolve:test');
 					git.gitDir.should.match(/^\/var\/tmp\//);
 					debug("removing /var/tmp/xuexi");
-					process.chdir("/");
 					rimraf("/var/tmp/xuexi", function() {
 						done();
 					});
