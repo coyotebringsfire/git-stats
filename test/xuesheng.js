@@ -4,7 +4,7 @@ var should=require('should'),
 
 describe("xuesheng", function xueshengSuite() {
   this.timeout(0);
-  it("should reject the returned promise, if an invalid module is passed via IPC", function doIt(done) {
+  it("should emit an error message, if an invalid module is passed via IPC", function doIt(done) {
     var child;
     if( process.cwd().match(/test$/) ) {
       child=child_process.fork('../lib/xuesheng');
@@ -27,12 +27,15 @@ describe("xuesheng", function xueshengSuite() {
     }
     var moduleOnePromise=Q.defer(), moduleTwoPromise=Q.defer();
     child.on('message', function(msg) {
-      msg.module.should.match(/should/);
+      msg.module.should.match(/q/);
       msg.results.should.be.ok;
       should(msg.err).not.be.ok;
       done();
     });
-    child.send({module:"should"});
+    child.on('error', function(err) {
+      console.log("%j", err);
+    });
+    child.send({module:"q"});
   });
   it("should emit an error event if a module is passed that is invalid", function doIt(done) {
     var child;
