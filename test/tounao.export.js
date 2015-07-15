@@ -26,7 +26,6 @@ describe("#export", function exportFunction() {
       .then(function onResolve(msg) {
         debug("%j", msg);
         msg.error.should.not.be.greaterThan(0.005);
-        console.log("%j", brain);
         brain.export()
           .then(function onExportResolved(trainedBrain) {
             trainedBrain.should.be.ok;
