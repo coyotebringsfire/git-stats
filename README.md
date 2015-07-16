@@ -13,9 +13,55 @@ $ npm install xuexi
 ```
 
 ## Usage
+the basic usage: this uses the results of noderank-nightly and emits a 'ready' event when it's ready to answer questions'
 ```
-var xuexi=require('xuexi');
-xuexi.predict({repo:"/path/to/repo/to/analize"});
+var X=require('xuexi'),
+	x=new X();
+
+x.on('error', function onErrorEvent(err) {
+	//an error happened
+	...
+});
+x.on('ready', function onReadyEvent() {
+	x.question(statistical_representation_of_git_repo);
+		.then(function onQuestionResolved(answer) {
+			//use answer
+			...
+		}, function onRejection(err) {
+			//an error happened while questioning
+			...
+		});
+});
+
+```
+you can export a json representation of the brain
+```
+var X=require('xuexi'),
+	x=new X();
+
+x.on('ready', function onReadyEvent() {
+	x.export()
+		.then(function onExportResolved(trainedBrain) {
+			//write trainedBrain to file, save to DB, transfer over network, etc
+			...
+		});
+});
+```
+load a trained brain when constructing a 'xuexi' object
+```
+var X=require('xuexi'), serializedBrain=require('./trainedBrain.json'),
+	x=new X(serializedBrain);
+
+x.on('ready', function onReadyEvent() {
+	x.question(statistical_representation_of_git_repo);
+		.then(function onQuestionResolved(answer) {
+			//use answer
+			...
+		}, function onRejection(err) {
+			//an error happened while questioning
+			...
+		});
+});
 ```
 
 ## Tests
