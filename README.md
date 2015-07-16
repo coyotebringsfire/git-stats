@@ -12,6 +12,14 @@ No, I just like how the character for xí in traditional chinese looks.
 $ npm install xuexi
 ```
 
+## Events
+
+` ready ` emitted when the brain has been trained and is ready to answer questions
+` error(err) ` emitted when an error happens during training. 
+
+  - Parameters
+    - ` err ` is an instance of Error that describes the error
+
 ## Usage
 the basic usage: this uses the results of noderank-nightly and emits a 'ready' event when it's ready to answer questions'
 ```javascript
