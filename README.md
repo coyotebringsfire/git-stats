@@ -8,13 +8,13 @@ Xuéxí - mandarin for "to learn" because the purpose of this project is to trai
 No, I just like how the character for xí in traditional chinese looks.
 
 ## Install
-```
+```bash
 $ npm install xuexi
 ```
 
 ## Usage
 the basic usage: this uses the results of noderank-nightly and emits a 'ready' event when it's ready to answer questions'
-```
+```javascript
 var X=require('xuexi'),
 	x=new X();
 
@@ -35,7 +35,7 @@ x.on('ready', function onReadyEvent() {
 
 ```
 you can export a json representation of the brain
-```
+```javascript
 var X=require('xuexi'),
 	x=new X();
 
@@ -48,7 +48,7 @@ x.on('ready', function onReadyEvent() {
 });
 ```
 load a trained brain when constructing a 'xuexi' object
-```
+```javascript
 var X=require('xuexi'), serializedBrain=require('./trainedBrain.json'),
 	x=new X(serializedBrain);
 
@@ -65,9 +65,18 @@ x.on('ready', function onReadyEvent() {
 ```
 
 ## Tests
-```
-$ DEBUG='xuexi*' npm test
+```bash
+$ DEBUG='' npm test
 ```
 
 ## Debugging
-xuexi uses the debug module to log messages to the console that would be helpful in debugging. All of the messages are prepended with 'xuexi', and each closure has a message string uniquely identifying that closure
+xuexi uses the debug module to log messages to the console that would be helpful in debugging. All of the messages are prepended with 'xuexi', and each closure has a message string uniquely identifying that closure.
+log files are also generated at /tmp/xuexi-logs/ using bunyan
+
+## Suggested Reading
+##### A Large Scale Study of Programming Languages and Code Quality in Github  
+Baishakhi Ray, Daryl Posnett, Vladimir Filkov, Premkumar T Devanbu
+[http://macbeth.cs.ucdavis.edu/lang_study.pdf](http://macbeth.cs.ucdavis.edu/lang_study.pdf)
+##### Incrementals PageRank for Twiter Data Using Hadoop
+Ibrahim Bin Abdullah
+[http://homepages.inf.ed.ac.uk/miles/msc-projects/abdullah.pdf](http://homepages.inf.ed.ac.uk/miles/msc-projects/abdullah.pdf)
